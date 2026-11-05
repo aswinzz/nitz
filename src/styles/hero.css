@@ -1,0 +1,107 @@
+/*
+ * Hero — positions taken from Figma "Frame 11" (1440 × 1024):
+ * title  168px @ (69, 386) · bio 24px @ (103, 624) w910
+ * 256M+  168px @ (419, 734) · VIEWS 48px centred below
+ */
+.hero {
+  position: relative;
+  min-height: max(100svh, calc(var(--u) * 1024));
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Full-bleed image, only visible inside the moving circle */
+.hero__reveal {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  clip-path: circle(0 at 0 0);
+  will-change: clip-path;
+}
+
+.hero__content {
+  padding-top: calc(var(--u) * 386);
+  padding-bottom: calc(var(--u) * 30);
+}
+
+.hero__title {
+  margin: 0 0 0 calc(var(--u) * 69);
+  font-weight: 700;
+  font-size: calc(var(--u) * 168);
+  line-height: 1.02;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  min-height: 1.02em;
+}
+.hero__cursor {
+  display: inline-block;
+  font-weight: 200;
+  margin-left: 0.02em;
+  transform: translateY(-0.04em);
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.hero__bio {
+  margin: calc(var(--u) * 67) 0 0 calc(var(--u) * 103);
+  width: calc(var(--u) * 910);
+  font-weight: 700;
+  font-size: max(14px, calc(var(--u) * 24));
+  line-height: 1.21;
+  text-transform: uppercase;
+}
+
+.hero__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  margin: calc(var(--u) * -6) 0 0 calc(var(--u) * 419);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.hero__stat-num {
+  font-size: calc(var(--u) * 168);
+  line-height: 1.02;
+  font-variant-numeric: tabular-nums;
+}
+.hero__stat-label {
+  font-size: calc(var(--u) * 48);
+  line-height: 1.21;
+  margin-top: calc(var(--u) * 9);
+}
+
+@media (max-width: 767px) {
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+  }
+  .hero__content {
+    padding: 0 20px 48px;
+  }
+  .hero__title {
+    margin: 0;
+    font-size: 16.5vw;
+  }
+  .hero__bio {
+    margin: 24px 0 0;
+    width: auto;
+  }
+  .hero__stat {
+    margin: 28px 0 0 auto;
+  }
+  .hero__stat-num {
+    font-size: 22vw;
+  }
+  .hero__stat-label {
+    font-size: 7vw;
+  }
+}
