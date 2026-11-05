@@ -9,7 +9,6 @@ npm run build    # static site in /dist (deploy anywhere: Netlify, Vercel, GitHu
 ```
 
 ## Updating content
-
 **Edit only [`src/config/site.config.js`](src/config/site.config.js).**
 
 | Section | Config key | What you can change |
