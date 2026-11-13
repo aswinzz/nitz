@@ -8,7 +8,7 @@ export function renderNav(cfg, picker) {
   return `
   <header class="nav">
     <div class="nav__left">
-      <nav class="nav__group">${cfg.left.map(link).join('')}</nav>
+      ${cfg.left?.length ? `<nav class="nav__group">${cfg.left.map(link).join('')}</nav>` : ''}
       ${renderPicker(picker)}
     </div>
     <nav class="nav__group nav__group--right">${cfg.right.map(link).join('')}</nav>

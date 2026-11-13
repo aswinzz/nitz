@@ -158,56 +158,109 @@ img {
   pointer-events: auto;
 }
 .picker {
+  position: relative;
   display: flex;
-  gap: 10px;
-  margin-top: -3px;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: -8px;
 }
 .dial {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 5px;
 }
+/* outer ring = gauge filled to the channel value; inner cap = the knob */
 .dial__knob {
+  --p: 0;
   position: relative;
-  width: 24px;
-  height: 24px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: var(--fill);
-  border: 1.5px solid var(--ink);
+  background: conic-gradient(var(--fill) calc(var(--p) * 1turn), color-mix(in srgb, var(--ink) 14%, transparent) 0);
+  box-shadow: 0 0 0 1.5px var(--ink);
   cursor: grab;
   touch-action: none;
-  transition: transform 0.3s var(--ease-out), border-color 0.25s;
+  transition: transform 0.35s var(--ease-out), box-shadow 0.25s;
+}
+.dial__cap {
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--fill), #fff 35%), var(--fill) 55%, color-mix(in srgb, var(--fill), #000 25%));
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.35),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.2);
 }
 .dial__knob:hover,
 .dial.is-active .dial__knob {
-  transform: scale(1.18);
+  transform: scale(1.12) rotate(-4deg);
 }
 .dial.is-active .dial__knob {
   cursor: grabbing;
 }
 .dial__knob:focus-visible {
   outline: 2px solid var(--ink);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 /* needle: centre → rim, rotated by the channel value (0 = 12 o'clock) */
 .dial__needle {
   position: absolute;
   left: 50%;
-  top: 2px;
-  width: 2px;
-  height: calc(50% - 2px);
-  margin-left: -1px;
-  border-radius: 1px;
+  top: 8px;
+  width: 3px;
+  height: calc(50% - 8px);
+  margin-left: -1.5px;
+  border-radius: 2px;
   background: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
   transform-origin: 50% 100%;
 }
 .dial__val {
-  font: 10px/1 var(--font-mono);
+  font: 11px/1 var(--font-mono);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.dial__val b {
+  font-weight: 700;
+}
+.dial__val span {
+  display: inline-block;
   min-width: 3ch;
-  text-align: center;
-  opacity: 0.75;
+  text-align: right;
+}
+/* live colour chip with the hex code */
+.picker__chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  margin-top: 8px;
+  padding: 0 12px 0 5px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  font: 700 12px/1 var(--font-mono);
+  letter-spacing: 0.04em;
+}
+.picker__swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.picker__hint {
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 4px;
+  font: 14px var(--font-hand);
+  white-space: nowrap;
+  transform: rotate(-8deg);
+  animation: hint-bob 1.6s ease-in-out infinite;
+  transition: opacity 0.4s;
+}
+.picker__hint.is-hidden {
+  opacity: 0;
 }
 
 @media (max-width: 767px) {
@@ -221,11 +274,23 @@ img {
     gap: 14px;
   }
   .picker {
-    gap: 7px;
+    gap: 9px;
+    margin-top: -6px;
   }
   .dial__knob {
-    width: 20px;
-    height: 20px;
+    width: 36px;
+    height: 36px;
+  }
+  .dial__cap {
+    inset: 5px;
+  }
+  .dial__needle {
+    top: 6px;
+    height: calc(50% - 6px);
+  }
+  .picker__chip,
+  .picker__hint {
+    display: none;
   }
 }
 

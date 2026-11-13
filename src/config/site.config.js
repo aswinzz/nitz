@@ -34,11 +34,12 @@ export const site = {
   colorPicker: {
     enabled: true,
     remember: true,
+    hint: 'spin me!', // little handwritten note by the dials, hidden after the first turn ('' = none)
   },
 
   /* ── 1. NAV ─────────────────────────────────────────────── */
   nav: {
-    left: [{ label: 'Home', href: '#home' }],
+    left: [], // e.g. [{ label: 'Home', href: '#home' }] — shown before the colour picker
     right: [
       { label: 'Portfolio', href: '#portfolio' },
       { label: 'Contact', href: '#contact' },
@@ -58,13 +59,15 @@ export const site = {
 
     bio: 'I’m NITZ, a video editor specializing in YouTube content, short-form and ads. I focus on delivering polished, high-quality videos on schedule. From first cut to final export, my edits have helped creators and brands reach',
 
-    // Slot-machine counter: the reels spin to `value` on load, then every
-    // pull of the lever lands on a random number between slot.min and slot.max.
+    // Slot-machine counter. Each visitor gets a random number between
+    // slot.min and slot.max on their first visit and keeps it for good
+    // (saved in their browser): reloads and lever pulls always land on it.
+    // remember: false → start on `value`, and each pull shows a random number.
     stat: {
       value: 256,
       suffix: 'M+',
       label: 'Views',
-      slot: { min: 250, max: 280, hint: 'pull me!' },
+      slot: { min: 250, max: 280, hint: 'pull me!', remember: true },
     },
 
     // Wallpaper revealed in a soft spot (with a fading trail) under the cursor.

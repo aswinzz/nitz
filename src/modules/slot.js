@@ -50,6 +50,29 @@ export function initSlot(root, stat) {
   let current = null;
   let spinning = false;
 
+  /* Each visitor keeps their own number for good: the first visit draws one
+     at random from the range and it is saved (localStorage). Reloads and lever
+     pulls always land on that same number. */
+  const STORE = 'nitz:views';
+  const remember = stat.slot?.remember !== false;
+  const inRange = (n) => Number.isInteger(n) && n >= min && n <= max;
+  const load = () => {
+    try {
+      const n = Number(localStorage.getItem(STORE));
+      return inRange(n) ? n : null;
+    } catch {
+      return null;
+    }
+  };
+  const save = (n) => {
+    if (!remember) return;
+    try {
+      localStorage.setItem(STORE, String(n));
+    } catch {
+      /* storage unavailable: the number just won't persist */
+    }
+  };
+
   const setIdx = (r, i) => {
     r.idx = i;
     // push the drum back by its radius so the front digit sits at true size
@@ -121,7 +144,9 @@ export function initSlot(root, stat) {
       gsap
         .timeline()
         .to(lev, { p: 1, duration: 0.18 * (1 - lev.p) + 0.05, ease: 'power2.in', onUpdate: () => setLever(lev.p) })
-        .add(() => spinTo(randomPick()))
+        // the reels always spin, but a visitor's number never changes:
+        // with remember on they land on their saved number again
+        .add(() => spinTo(remember ? startValue() : randomPick()))
         .to(lev, { p: 0, duration: 0.9, ease: 'elastic.out(1, 0.45)', onUpdate: () => setLever(lev.p) });
       if (hint) gsap.to(hint, { autoAlpha: 0, duration: 0.4 });
     } else {
@@ -160,8 +185,18 @@ export function initSlot(root, stat) {
     }
   });
 
+  // this visitor's number: remembered one, else a fresh draw (saved for next time)
+  const startValue = () => {
+    if (!remember) return stat.value;
+    const saved = load();
+    if (saved !== null) return saved;
+    const n = randomPick();
+    save(n);
+    return n;
+  };
+
   return {
-    // used by the hero intro: first spin lands on the configured value
-    intro: () => spinTo(stat.value, { quick: true }),
+    // used by the hero intro: first spin lands on this visitor's number
+    intro: () => spinTo(startValue(), { quick: true }),
   };
 }

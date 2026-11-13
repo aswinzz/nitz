@@ -7,6 +7,8 @@
  * Double-click any dial to reset to the default colour.
  */
 
+import { esc } from './theme.js';
+
 const CHANNELS = [
   { key: 'r', label: 'Red', fill: '#e8402f' },
   { key: 'g', label: 'Green', fill: '#45c84a' },
@@ -52,11 +54,14 @@ export function renderPicker(cfg) {
       <div class="dial" data-ch="${c.key}">
         <div class="dial__knob" role="slider" tabindex="0" aria-label="${c.label}" aria-valuemin="0" aria-valuemax="255"
              style="--fill:${c.fill}">
+          <span class="dial__cap"></span>
           <span class="dial__needle"></span>
         </div>
-        <span class="dial__val">0</span>
+        <span class="dial__val"><b>${c.key.toUpperCase()}</b> <span>0</span></span>
       </div>`,
     ).join('')}
+    <span class="picker__chip" aria-hidden="true"><span class="picker__swatch"></span><span class="picker__hex">#000000</span></span>
+    ${cfg.hint ? `<span class="picker__hint" aria-hidden="true">${esc(cfg.hint)}</span>` : ''}
   </div>`;
 }
 
@@ -93,12 +98,22 @@ export function initPicker(cfg, defaultHex) {
   }));
 
   let saveT;
+  const hexEl = root.querySelector('.picker__hex');
+  const hint = root.querySelector('.picker__hint');
+  // hide the "spin me!" note once the visitor has touched a dial
+  if (hint) {
+    const hide = () => hint.classList.add('is-hidden');
+    ['pointerdown', 'keydown', 'wheel'].forEach((ev) => root.addEventListener(ev, hide, { once: true, passive: true }));
+  }
+
   const commit = (save = true) => {
     applyBg(rgb);
+    if (hexEl) hexEl.textContent = toHex(rgb).toUpperCase();
     dials.forEach((d) => {
       const v = rgb[d.ch];
       d.needle.style.transform = `rotate(${(v / 255) * 360}deg)`;
-      d.val.textContent = v;
+      d.knob.style.setProperty('--p', (v / 255).toFixed(4)); // gauge ring fill
+      d.val.lastElementChild.textContent = v;
       d.knob.setAttribute('aria-valuenow', v);
     });
     if (save && cfg?.remember) {

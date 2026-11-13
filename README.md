@@ -14,9 +14,9 @@ npm run build    # static site in /dist (deploy anywhere: Netlify, Vercel, GitHu
 | Section | Config key | What you can change |
 | --- | --- | --- |
 | Colours | `theme` | yellow bg, paper colours, card |
-| Colour picker | `colorPicker` | on/off, remember a visitor's colour (starts from `theme.bg`) |
+| Colour picker | `colorPicker` | on/off, remember a visitor's colour (starts from `theme.bg`), "spin me!" hint text |
 | Nav | `nav` | left / right links (`href: '#id'` scrolls smoothly) |
-| Hero | `hero` | typed title, extra typed phrases, bio, stat (start number, suffix, label, slot-machine range + hint), reveal image, size, wobble, trail length |
+| Hero | `hero` | typed title, extra typed phrases, bio, stat (start number, suffix, label, slot-machine range, hint, remember each visitor's number), reveal image, size, wobble, trail length |
 | Notebook | `notebook` | cover text, intro page, contents title, outro page, **`works[]`** |
 | Contact | `contact` | heading, email, socials, footer, joke `balls` (text + colours) |
 
@@ -49,7 +49,7 @@ Images in `/public` are referenced from the site root (`/public/works/a.jpg` →
 | 3D notebook: cover opens, pages turn with shading, contents jump through pages, arrows / keys / swipe. Under 768px it shows one page at a time and slides between pages | kyoosangchoi.com | `src/modules/notebook.js` |
 | Contact card rises in on scroll, tilts toward the cursor, click copies the email | kyoosangchoi.com + Figma | `src/modules/contact.js` |
 | R / G / B dials in the header recolour the page background live; text switches to black or white, whichever reads better (WCAG contrast). Drag around a dial, scroll on it, or use arrow keys; double-click resets | happening.studio | `src/modules/colorpicker.js` |
-| View counter as a casino slot machine: each digit is its own framed 3D drum reel that rolls downward and stops left to right; reels spin to the start number on load; pull the lever (click, drag down, or Enter) for a random number in `hero.stat.slot` range | — | `src/modules/slot.js` |
+| View counter as a casino slot machine: each digit is its own framed 3D drum reel that rolls downward and stops left to right; each visitor gets a random number in the `hero.stat.slot` range on their first visit and keeps it (localStorage); pulling the lever (click, drag down, or Enter) spins the reels but always lands on that same number | — | `src/modules/slot.js` |
 | Joke balls that bounce around the card; drag and throw them (texts in `contact.balls`) | — | `src/modules/balls.js` |
 | Video lightbox | — | `src/modules/lightbox.js` |
 
