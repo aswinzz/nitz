@@ -1,6 +1,6 @@
 # NITZ EDITS — portfolio boilerplate
 
-Vite + vanilla JS + GSAP + Lenis. Everything on the page is rendered from a single config file.
+Vite + vanilla JS + GSAP + Lenis. Everything on the page is rendered from a single config file
 
 ```bash
 npm install
