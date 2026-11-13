@@ -1,10 +1,12 @@
 import { gsap } from 'gsap';
 import { esc } from './theme.js';
+import { renderBalls, initBalls } from './balls.js';
 
 export function renderContact(c) {
   const footer = esc(c.footer).replace('{year}', new Date().getFullYear());
   return `
   <section class="contact" id="contact">
+    ${renderBalls(c.balls)}
     <div class="contact__stage">
       <div class="contact__tilt">
       <div class="contact__card">
@@ -31,6 +33,8 @@ export function initContact() {
   const card = section.querySelector('.contact__card');
   const box = section.querySelector('.contact__box');
   const tilt = section.querySelector('.contact__tilt');
+
+  initBalls(section);
 
   // Card is "handed" up into frame as you scroll in (scrubbed).
   gsap.fromTo(

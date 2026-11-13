@@ -4,8 +4,6 @@ const map = {
   paper: '--paper',
   paperDark: '--paper-dark',
   card: '--card',
-  loaderBg: '--loader-bg',
-  loaderInk: '--loader-ink',
 };
 
 export function applyTheme(theme = {}) {

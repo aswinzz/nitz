@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" preserveAspectRatio="xMidYMid slice">
+  <!-- Original illustration in the style of an early-2000s desktop wallpaper: blue sky, soft clouds, green rolling hills. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1f5fd0"/>
+      <stop offset="0.45" stop-color="#4b8de8"/>
+      <stop offset="0.75" stop-color="#9cc6f5"/>
+      <stop offset="1" stop-color="#d6e9fb"/>
+    </linearGradient>
+    <linearGradient id="hillBack" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7cbf3a"/>
+      <stop offset="1" stop-color="#3f8a1c"/>
+    </linearGradient>
+    <linearGradient id="hillFront" x1="0" y1="0" x2="0.15" y2="1">
+      <stop offset="0" stop-color="#8fd23f"/>
+      <stop offset="0.35" stop-color="#5fae25"/>
+      <stop offset="1" stop-color="#2f7413"/>
+    </linearGradient>
+    <radialGradient id="sheen" cx="0.38" cy="0.62" r="0.5">
+      <stop offset="0" stop-color="#c8f06a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#c8f06a" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-30%" y="-60%" width="160%" height="220%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+    <filter id="wisp" x="-30%" y="-80%" width="160%" height="260%">
+      <feGaussianBlur stdDeviation="32"/>
+    </filter>
+    <filter id="grass" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.08" numOctaves="2" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.15  0 0 0 0 0.35  0 0 0 0 0.05  0 0 0 0.35 0"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+
+  <!-- clouds -->
+  <g fill="#ffffff">
+    <g opacity="0.95" filter="url(#soft)">
+      <ellipse cx="420" cy="230" rx="210" ry="62"/>
+      <ellipse cx="540" cy="200" rx="150" ry="70"/>
+      <ellipse cx="320" cy="255" rx="140" ry="44"/>
+      <ellipse cx="1280" cy="170" rx="240" ry="58"/>
+      <ellipse cx="1420" cy="140" rx="160" ry="66"/>
+      <ellipse cx="1150" cy="195" rx="150" ry="42"/>
+      <ellipse cx="1700" cy="330" rx="170" ry="40"/>
+      <ellipse cx="860" cy="360" rx="130" ry="32"/>
+    </g>
+    <g opacity="0.55" filter="url(#wisp)">
+      <ellipse cx="900" cy="110" rx="420" ry="40"/>
+      <ellipse cx="200" cy="420" rx="300" ry="34"/>
+      <ellipse cx="1560" cy="460" rx="360" ry="36"/>
+    </g>
+  </g>
+
+  <!-- back hill -->
+  <path d="M0 760 C 320 650 620 640 900 700 S 1500 770 1920 640 L1920 1080 L0 1080 Z" fill="url(#hillBack)"/>
+  <!-- front hill -->
+  <path d="M0 830 C 260 690 640 600 980 640 C 1300 680 1600 820 1920 860 L1920 1080 L0 1080 Z" fill="url(#hillFront)"/>
+  <path d="M0 830 C 260 690 640 600 980 640 C 1300 680 1600 820 1920 860 L1920 1080 L0 1080 Z" fill="url(#sheen)"/>
+  <path d="M0 830 C 260 690 640 600 980 640 C 1300 680 1600 820 1920 860 L1920 1080 L0 1080 Z" fill="#000" filter="url(#grass)"/>
+</svg>

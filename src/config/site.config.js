@@ -23,20 +23,20 @@ export const site = {
     paper: '#f4f1e8', // notebook left pages
     paperDark: '#141414', // notebook right pages
     card: '#d9d9d9', // contact card
-    loaderBg: '#f0ece4',
-    loaderInk: '#111111',
   },
 
-  /* ── 1. LOADER (mathis-biabiany style) ─────────────────── */
-  loader: {
+  /*
+   * RGB dial colour picker in the header (happening.studio style).
+   * Visitors drag the R / G / B dials to recolour the page background;
+   * text switches to white automatically when the colour gets dark.
+   * The starting colour is theme.bg. remember: keep a visitor's pick on reload.
+   */
+  colorPicker: {
     enabled: true,
-    // Words cycle top-left while the counter runs 0 → 100.
-    words: ['Nitz Edits', 'video editor', 'youtube', 'short-form', 'ads', 'stories that hold'],
-    // Minimum time (ms) the loader is shown, even if assets load faster.
-    minDuration: 2600,
+    remember: true,
   },
 
-  /* ── 2. NAV ─────────────────────────────────────────────── */
+  /* ── 1. NAV ─────────────────────────────────────────────── */
   nav: {
     left: [{ label: 'Home', href: '#home' }],
     right: [
@@ -45,7 +45,7 @@ export const site = {
     ],
   },
 
-  /* ── 3. HERO / HEADER (everline style) ─────────────────── */
+  /* ── 2. HERO / HEADER (everline style) ─────────────────── */
   hero: {
     // Typed, deleted and re-typed on a loop.
     title: 'NITZ EDITS',
@@ -58,18 +58,23 @@ export const site = {
 
     bio: 'I’m NITZ, a video editor specializing in YouTube content, short-form and ads. I focus on delivering polished, high-quality videos on schedule. From first cut to final export, my edits have helped creators and brands reach',
 
+    // Slot-machine counter: the reels spin to `value` on load, then every
+    // pull of the lever lands on a random number between slot.min and slot.max.
     stat: {
-      value: 256, // counted up from 0
+      value: 256,
       suffix: 'M+',
       label: 'Views',
+      slot: { min: 250, max: 280, hint: 'pull me!' },
     },
 
-    // Image revealed inside the circle that follows the cursor.
-    revealImage: '/images/hero-reveal.svg',
-    revealSize: 0.27, // circle radius as a fraction of viewport width
+    // Wallpaper revealed in a soft spot (with a fading trail) under the cursor.
+    revealImage: '/images/xp-hills.svg',
+    revealSize: 0.11, // spot radius as a fraction of viewport width (0.11 ≈ 158px at 1440)
+    revealWobble: 0.16, // how free-form the shape is: 0 = perfect circle, 0.3 = very blobby
+    revealTrail: 0.7, // seconds the smear behind the cursor lasts (0 = no trail)
   },
 
-  /* ── 4. NOTEBOOK / PORTFOLIO (kyoosang style) ───────────── */
+  /* ── 3. NOTEBOOK / PORTFOLIO (kyoosang style) ───────────── */
   notebook: {
     cover: {
       title: 'PORTFOLIO',
@@ -157,7 +162,7 @@ export const site = {
     ],
   },
 
-  /* ── 5. CONTACT (kyoosang style card) ──────────────────── */
+  /* ── 4. CONTACT (kyoosang style card) ──────────────────── */
   contact: {
     heading: 'Let’s create together!!!',
     label: 'Contact',
@@ -169,5 +174,17 @@ export const site = {
       { label: 'Behance', href: 'https://behance.net/' },
     ],
     footer: '© {year} Nitz Edits',
+
+    /*
+     * Balls that bounce around behind the contact card.
+     * Drag & throw them. Add/remove freely (3–5 looks best).
+     * bg / ink are optional colours.
+     */
+    balls: [
+      { text: 'Hire me!', bg: '#000000', ink: '#f0e42a' },
+      { text: 'Will edit for food', bg: '#ff5a36', ink: '#000000' },
+      { text: 'Unemployed & cutting', bg: '#ffffff', ink: '#000000' },
+      { text: 'My mom says I’m talented', bg: '#2f6bff', ink: '#ffffff' },
+    ],
   },
 };

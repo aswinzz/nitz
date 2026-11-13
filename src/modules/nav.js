@@ -1,12 +1,16 @@
 import { esc } from './theme.js';
+import { renderPicker } from './colorpicker.js';
 
 const link = (l) =>
   `<a class="nav__link" href="${esc(l.href)}"><span data-text="${esc(l.label)}">${esc(l.label)}</span></a>`;
 
-export function renderNav(cfg) {
+export function renderNav(cfg, picker) {
   return `
   <header class="nav">
-    <nav class="nav__group">${cfg.left.map(link).join('')}</nav>
+    <div class="nav__left">
+      <nav class="nav__group">${cfg.left.map(link).join('')}</nav>
+      ${renderPicker(picker)}
+    </div>
     <nav class="nav__group nav__group--right">${cfg.right.map(link).join('')}</nav>
   </header>`;
 }

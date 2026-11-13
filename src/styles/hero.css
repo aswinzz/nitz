@@ -10,15 +10,14 @@
   isolation: isolate;
 }
 
-/* Full-bleed image, only visible inside the moving circle */
+/* Wallpaper canvas: only the soft cursor trail is painted (see hero.js) */
 .hero__reveal {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-size: cover;
-  background-position: center;
-  clip-path: circle(0 at 0 0);
-  will-change: clip-path;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .hero__content {
@@ -63,19 +62,177 @@
   flex-direction: column;
   align-items: center;
   width: max-content;
-  margin: calc(var(--u) * -6) 0 0 calc(var(--u) * 419);
+  margin: calc(var(--u) * 28) 0 0 calc(var(--u) * 419); /* reels stand taller than the old number */
   font-weight: 700;
   text-transform: uppercase;
 }
 .hero__stat-num {
-  font-size: calc(var(--u) * 168);
   line-height: 1.02;
   font-variant-numeric: tabular-nums;
+}
+
+/* ── Slot machine counter ─────────────────────────────────── */
+.slot {
+  position: relative;
+  display: flex;
+  font-size: calc(var(--u) * 168);
+}
+.slot__num {
+  display: inline-flex;
+  align-items: center;
+}
+.slot__reels {
+  position: relative;
+  display: inline-flex;
+  gap: 0.07em;
+  margin-right: 0.06em;
+}
+/* payline markers either side of the reels */
+.slot__reels::before,
+.slot__reels::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  border: 0.07em solid transparent;
+  translate: 0 -50%;
+}
+.slot__reels::before {
+  right: 100%;
+  margin-right: 0.03em;
+  border-left-color: var(--ink);
+}
+.slot__reels::after {
+  left: 100%;
+  margin-left: 0.03em;
+  border-right-color: var(--ink);
+}
+
+/* one reel = a framed window onto a rotating drum of digits */
+.reel {
+  position: relative;
+  display: block;
+  width: 0.74em;
+  height: 1.34em;
+  overflow: hidden;
+  border: 0.028em solid var(--ink);
+  border-radius: 0.12em;
+  background: color-mix(in srgb, var(--bg) 70%, #fff);
+  perspective: 5em;
+  transition: background-color 0.25s, border-color 0.25s;
+}
+:root[data-ink='light'] .reel {
+  background: color-mix(in srgb, var(--bg) 70%, #000);
+}
+/* curvature shading: darker toward the top and bottom of the drum */
+.reel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.42),
+    rgba(0, 0, 0, 0.08) 26%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(0, 0, 0, 0.08) 74%,
+    rgba(0, 0, 0, 0.42)
+  );
+}
+.reel__strip {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.reel__face {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1.02em;
+  margin-top: -0.51em;
+  line-height: 1.02;
+  text-align: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.reel__strip.is-blur {
+  filter: blur(0.02em);
+}
+.slot__suffix {
+  line-height: 1.02;
+}
+
+/* lever: pivot box, stick and knob, sized off the number's font-size */
+.slot__lever {
+  position: absolute;
+  left: 100%;
+  bottom: 0.16em;
+  margin-left: 0.1em;
+  width: 0.34em;
+  height: 0.9em;
+  cursor: grab;
+  touch-action: none;
+}
+.slot__lever:active {
+  cursor: grabbing;
+}
+.slot__lever:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 0.06em;
+  border-radius: 0.05em;
+}
+.slot__base {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0.2em;
+  height: 0.16em;
+  translate: -50% 0;
+  border-radius: 0.04em;
+  background: var(--ink);
+}
+.slot__stick {
+  position: absolute;
+  left: 50%;
+  bottom: 0.12em;
+  width: 0.04em;
+  height: 0.7em;
+  margin-left: -0.02em;
+  border-radius: 0.02em;
+  background: var(--ink);
+  transform-origin: 50% 100%;
+}
+.slot__knob {
+  position: absolute;
+  left: 50%;
+  bottom: calc(0.12em + 0.7em - 0.1em);
+  width: 0.2em;
+  height: 0.2em;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff8a6b, #ff5a36 45%, #c1341a);
+  box-shadow: 0 0.02em 0.05em rgba(0, 0, 0, 0.35);
+}
+.slot__hint {
+  position: absolute;
+  left: 80%;
+  bottom: 84%;
+  font-family: var(--font-hand);
+  font-weight: 400;
+  font-size: max(11px, 0.1em);
+  text-transform: none;
+  white-space: nowrap;
+  transform: rotate(-14deg);
+  animation: hint-bob 1.6s ease-in-out infinite;
+}
+@keyframes hint-bob {
+  50% {
+    translate: 0 -0.3em;
+  }
 }
 .hero__stat-label {
   font-size: calc(var(--u) * 48);
   line-height: 1.21;
-  margin-top: calc(var(--u) * 9);
+  margin-top: calc(var(--u) * 18);
 }
 
 @media (max-width: 767px) {
@@ -96,10 +253,15 @@
     width: auto;
   }
   .hero__stat {
-    margin: 28px 0 0 auto;
+    margin: 28px 0 0 0;
   }
-  .hero__stat-num {
-    font-size: 22vw;
+  .slot {
+    font-size: 17vw;
+  }
+  .slot__hint {
+    left: auto;
+    right: 30%;
+    bottom: 104%;
   }
   .hero__stat-label {
     font-size: 7vw;

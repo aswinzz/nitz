@@ -1,7 +1,6 @@
 /*
- * Contact — Figma "Frame 13": card 888 × 482 centred (#d9d9d9),
- * heading Inter Bold 48, bordered box 646 × 161 (5px) with
- * CONTACT / email at Inter Bold 36.
+ * Contact — Figma "Frame 13" layout (grey card, heading, bordered
+ * CONTACT / email box), scaled down to ~60% so the joke balls have room.
  */
 .contact {
   position: relative;
@@ -12,20 +11,24 @@
   overflow: hidden;
 }
 .contact__stage {
+  position: relative;
+  z-index: 2;
+  pointer-events: none; /* let balls be grabbed around the card */
   flex: 1;
   display: grid;
   place-items: center;
   padding: 80px 16px;
 }
 .contact__card {
-  width: min(calc(var(--u) * 888), 100%);
-  min-width: min(560px, 100%);
+  pointer-events: auto;
+  width: min(calc(var(--u) * 520), 100%);
+  min-width: min(320px, 100%);
   aspect-ratio: 888 / 482;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: calc(var(--u) * 90);
+  gap: calc(var(--u) * 40);
   background: var(--card);
   box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.4);
   transform-style: preserve-3d;
@@ -45,7 +48,7 @@
 .contact__heading {
   margin: 0;
   font-weight: 700;
-  font-size: max(22px, calc(var(--u) * 48));
+  font-size: max(17px, calc(var(--u) * 28));
   line-height: 1.21;
   text-transform: uppercase;
   text-align: center;
@@ -59,9 +62,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: max(3px, calc(var(--u) * 5)) solid #000;
+  border: 3px solid #000;
   font-weight: 700;
-  font-size: max(15px, calc(var(--u) * 36));
+  font-size: max(12px, calc(var(--u) * 20));
   line-height: 1.6;
   text-transform: uppercase;
   overflow: hidden;
@@ -82,7 +85,7 @@
   transform: scaleY(1);
 }
 .contact__box:hover {
-  color: var(--bg);
+  color: var(--on-black);
 }
 .contact__label,
 .contact__email {
@@ -106,6 +109,8 @@
 }
 
 .footer {
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -130,11 +135,71 @@
   font-size: inherit;
 }
 
+/* ── Joke balls ───────────────────────────────────────────── */
+.balls {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.ball {
+  --r: 70px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--r) * 2);
+  height: calc(var(--r) * 2);
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+  will-change: transform;
+}
+.ball.is-grabbed {
+  cursor: grabbing;
+}
+.ball__face {
+  --spin: 0deg;
+  --sq: 1;
+  --sq-a: 0deg;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ball-bg);
+  color: var(--ball-ink);
+  /* squash along the impact direction, then spin the text with the roll */
+  transform: rotate(var(--sq-a)) scale(var(--sq), calc(2 - var(--sq))) rotate(calc(-1 * var(--sq-a))) rotate(var(--spin));
+  box-shadow:
+    inset -0.18em -0.22em 0.5em rgba(0, 0, 0, 0.28),
+    inset 0.15em 0.18em 0.4em rgba(255, 255, 255, 0.35),
+    0 0.6em 1.2em -0.4em rgba(0, 0, 0, 0.35);
+  font-size: calc(var(--r) * 0.2);
+  transition: box-shadow 0.3s;
+}
+.ball.is-grabbed .ball__face {
+  box-shadow:
+    inset -0.18em -0.22em 0.5em rgba(0, 0, 0, 0.28),
+    inset 0.15em 0.18em 0.4em rgba(255, 255, 255, 0.35),
+    0 1.4em 2em -0.6em rgba(0, 0, 0, 0.45);
+}
+.ball__text {
+  width: 74%;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
 @media (max-width: 767px) {
   .contact__card {
     aspect-ratio: auto;
-    padding: 48px 20px;
-    gap: 32px;
+    width: min(320px, 100%);
+    padding: 28px 18px;
+    gap: 18px;
   }
   .contact__box {
     width: 100%;

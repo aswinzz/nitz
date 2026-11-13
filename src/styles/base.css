@@ -1,11 +1,10 @@
 :root {
   --bg: #f0e42a;
   --ink: #000;
+  --on-black: #f0e42a; /* bg colour when readable on black, else white (set by colorpicker.js) */
   --paper: #f4f1e8;
   --paper-dark: #141414;
   --card: #d9d9d9;
-  --loader-bg: #f0ece4;
-  --loader-ink: #111;
 
   /* 1 Figma px at the 1440px design width */
   --u: calc(100vw / 1440);
@@ -32,9 +31,12 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.theme-init body {
+  transition: none;
 }
 
-body.is-loading,
 body.lightbox-open {
   overflow: hidden;
 }
@@ -49,6 +51,16 @@ html.lenis body {
 }
 .lenis.lenis-stopped {
   overflow: hidden;
+}
+
+/* visually hidden, still read by screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 a {
@@ -94,6 +106,7 @@ img {
 }
 .nav__group {
   display: flex;
+  align-items: flex-start; /* don't stretch links to the taller dial row */
   gap: calc(var(--u) * 52);
   pointer-events: auto;
 }
@@ -137,12 +150,82 @@ img {
   transform-origin: left;
 }
 
+/* ── RGB dial colour picker ─────────────────────────────────── */
+.nav__left {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--u) * 40);
+  pointer-events: auto;
+}
+.picker {
+  display: flex;
+  gap: 10px;
+  margin-top: -3px;
+}
+.dial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.dial__knob {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--fill);
+  border: 1.5px solid var(--ink);
+  cursor: grab;
+  touch-action: none;
+  transition: transform 0.3s var(--ease-out), border-color 0.25s;
+}
+.dial__knob:hover,
+.dial.is-active .dial__knob {
+  transform: scale(1.18);
+}
+.dial.is-active .dial__knob {
+  cursor: grabbing;
+}
+.dial__knob:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+/* needle: centre → rim, rotated by the channel value (0 = 12 o'clock) */
+.dial__needle {
+  position: absolute;
+  left: 50%;
+  top: 2px;
+  width: 2px;
+  height: calc(50% - 2px);
+  margin-left: -1px;
+  border-radius: 1px;
+  background: #fff;
+  transform-origin: 50% 100%;
+}
+.dial__val {
+  font: 10px/1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  min-width: 3ch;
+  text-align: center;
+  opacity: 0.75;
+}
+
 @media (max-width: 767px) {
   .nav {
     padding: 20px 20px 0;
   }
   .nav__group {
     gap: 18px;
+  }
+  .nav__left {
+    gap: 14px;
+  }
+  .picker {
+    gap: 7px;
+  }
+  .dial__knob {
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -174,7 +257,7 @@ img {
   position: absolute;
   top: 24px;
   right: 28px;
-  color: var(--bg);
+  color: var(--on-black);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
